@@ -19,32 +19,27 @@ public class AutorService {
   public List<AutorResponseDTO> listarAutores() {
     List<Autor> autores = autorRepository.findAll();
     return autores.stream()
-        .map(autor -> new AutorResponseDTO(autor.getNome(), autor.getNacionalidade(), autor.getDataNascimento()))
+        .map(this::mapToResponseDTO)
         .collect(Collectors.toList());
   }
 
   public AutorResponseDTO obterAutorPorId(Long id) {
-    Autor autor = autorRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
-    return new AutorResponseDTO(autor.getNome(), autor.getNacionalidade(), autor.getDataNascimento());
+    Autor autor = buscarEntidadePorId(id);
+    return new AutorResponseDTO(id, autor.getNome(), autor.getNacionalidade(), autor.getDataNascimento());
   }
 
-  public Autor salvar(AutorRequestDTO dto) {
+  public AutorResponseDTO salvar(AutorRequestDTO dto) {
     Autor autor = new Autor();
-    autor.setNome(dto.nome());
-    autor.setNacionalidade(dto.nacionalidade());
-    autor.SetDataNascimento(dto.dataNascimento());
+    copiarDadosParaEntidade(autor, dto);
 
-    return autorRepository.save(autor);
+    return mapToResponseDTO(autorRepository.save(autor));
   }
 
-  public Autor atualizar(Long id, AutorRequestDTO dto) {
-    Autor autor = obterAutorPorId(id);
-    autor.setNome(dto.nome());
-    autor.setNacionalidade(dto.nacionalidade());
-    autor.SetDataNascimento(dto.dataNascimento());
+  public AutorResponseDTO atualizar(Long id, AutorRequestDTO dto) {
+    Autor autor = buscarEntidadePorId(id);
+    copiarDadosParaEntidade(autor, dto);
 
-    return autorRepository.save(autor);
+    return mapToResponseDTO(autorRepository.save(autor));
   }
 
   public void deletar(Long id) {
@@ -52,5 +47,26 @@ public class AutorService {
       throw new RuntimeException("Autor não encontrado com id: " + id);
     }
     autorRepository.deleteById(id);
+  }
+
+  // Métodos
+
+  private Autor buscarEntidadePorId(Long id) {
+    return autorRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Autor não encontrado com o id: " + id));
+  }
+
+  private void copiarDadosParaEntidade(Autor autor, AutorRequestDTO dto) {
+    autor.setNome(dto.nome());
+    autor.setNacionalidade(dto.nacionalidade());
+    autor.setDataNascimento(dto.dataNascimento());
+  }
+
+  private AutorResponseDTO mapToResponseDTO(Autor autor) {
+    return new AutorResponseDTO(
+        autor.getId(),
+        autor.getNome(),
+        autor.getNacionalidade(),
+        autor.getDataNascimento());
   }
 }
