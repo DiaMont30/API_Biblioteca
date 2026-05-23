@@ -1,11 +1,13 @@
 package br.com.escola.biblioteca.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public record LivroRequestDTO(
-    String titulo,
-    String istn,
-    Integer anoPublicacao,
-    String genero,
-    Long autorId
-) {}
+        @NotBlank String titulo,
+        String isbn,
+        Integer anoPublicacao,
+        String genero,
+        @NotNull Long autorId) {
 
-
+}
