@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class LivroController {
 
 @Autowired
-private AutorService LivroService;
+private LivroService LivroService;
 
  
 @GetMapping("/todos-os-livros")
