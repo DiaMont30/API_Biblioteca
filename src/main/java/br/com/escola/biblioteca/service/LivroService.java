@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.escola.biblioteca.dto.LivroRequestDTO;
 import br.com.escola.biblioteca.dto.LivroResponseDTO;
-import br.com.escola.biblioteca.entity.*;
+import br.com.escola.biblioteca.entity.Autor;
+import br.com.escola.biblioteca.entity.Livro;
+import br.com.escola.biblioteca.exception.VerificarExisteException;
 import br.com.escola.biblioteca.repository.AutorRepository;
 import br.com.escola.biblioteca.repository.LivroRepository;
 
@@ -33,10 +35,15 @@ public class LivroService {
         return new LivroResponseDTO(id, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(), livro.getGenero(), livro.getAutor().getId(), livro.getAutor().getNome());
       }
 
-    public LivroResponseDTO salvar(LivroRequestDTO dto) {
+    public LivroResponseDTO salvar(LivroRequestDTO dto) { 	
+    	if (livroRepository.existsByIsbn(dto.isbn())) {
+            throw new VerificarExisteException(
+                "Não foi possível cadastrar o livro. O ISBN '" + dto.isbn() + "' já está cadastrado.");
+        }
+    	
         Autor autor = autorRepository.findById(dto.autorId())
-                .orElseThrow(() -> new RuntimeException(
-                        "Autor não encontrado com id: " + dto.autorId()));
+                .orElseThrow(() -> new VerificarExisteException(
+                        "Não foi possivel cadastrar o Livro. Autor não foi encontrado com o id: " + dto.autorId()));
         
         Livro livro = new Livro();
         importeDadosParaEntidade(livro, dto);
@@ -45,12 +52,17 @@ public class LivroService {
     }
 
     public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
+    	if (livroRepository.existsByIsbn(dto.isbn())) {
+            throw new VerificarExisteException(
+                "Não foi possível atualizar o livro. O ISBN '" + dto.isbn() + "' já está cadastrado.");
+        }
+    	
         Livro livro = livroRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
-                        "Livro não encontrado com id: " + id));
+                .orElseThrow(() -> new VerificarExisteException(
+                        "Não foi possível atualizar o livro. Livro não foi encontrado com o id: " + id));
         Autor autor = autorRepository.findById(dto.autorId())
-                .orElseThrow(() -> new RuntimeException(
-                        "Autor não encontrado com id: " + dto.autorId()));
+                .orElseThrow(() -> new VerificarExisteException(
+                        "Não foi possível atualizar o livro. Autor não foi encontrado com o id: " + dto.autorId()));
 
         importeDadosParaEntidade(livro, dto);
         livro.setAutor(autor);
@@ -59,8 +71,8 @@ public class LivroService {
 
     public void deletar(Long id) {
         if (!livroRepository.existsById(id)) {
-            throw new RuntimeException(
-                    "não é possível deletar o livro pois o id não existe no banco de dados: " + id);
+            throw new VerificarExisteException(
+                    "Não foi possível deletar o livro. Livro não foi encontrado com o id: " + id);
         }
 
         livroRepository.deleteById(id);
@@ -75,7 +87,7 @@ public class LivroService {
 
     private Livro buscarEntidadePorId(Long id) {
         return livroRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
+            .orElseThrow(() -> new VerificarExisteException("Livro não encontrado com o id: " + id));
       } 
     
     private LivroResponseDTO mapToResponseDTO(Livro livro) {

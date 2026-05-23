@@ -7,5 +7,5 @@ import br.com.escola.biblioteca.entity.Livro;
 
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, Long> {
-    Livro findByTitulo(String titulo);
+	boolean existsByIsbn(String isbn);
 }

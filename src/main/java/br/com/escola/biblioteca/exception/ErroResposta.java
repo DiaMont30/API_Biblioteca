@@ -3,10 +3,13 @@ package br.com.escola.biblioteca.exception;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ErroResposta {
 
 	private Integer status; 
 	 private String titulo;
+	 @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	 private LocalDateTime dataHora;
 	 private List<String> erros;
 	 
