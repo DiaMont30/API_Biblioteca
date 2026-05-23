@@ -1,5 +1,8 @@
 package br.com.escola.biblioteca.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +36,7 @@ public class Livro {
 	@Column(name = "genero", length = 30)
 	private String genero;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="id_autor")
 	private Autor autor;

@@ -25,7 +25,7 @@ public class AutorService {
 
   public AutorResponseDTO obterAutorPorId(Long id) {
     Autor autor = buscarEntidadePorId(id);
-    return new AutorResponseDTO(id, autor.getNome(), autor.getNacionalidade(), autor.getDataNascimento());
+    return new AutorResponseDTO(id, autor.getNome(), autor.getNacionalidade(), autor.getDataNascimento(), autor.getLivros());
   }
 
   public AutorResponseDTO salvar(AutorRequestDTO dto) {
@@ -67,6 +67,7 @@ public class AutorService {
         autor.getId(),
         autor.getNome(),
         autor.getNacionalidade(),
-        autor.getDataNascimento());
+        autor.getDataNascimento(),
+        autor.getLivros());
   }
 }

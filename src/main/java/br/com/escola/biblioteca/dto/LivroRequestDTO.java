@@ -1,13 +1,16 @@
 package br.com.escola.biblioteca.dto;
 
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record LivroRequestDTO(
-        @NotBlank String titulo,
+        @NotBlank(message = "O nome do livro é obrigatório")
+        String titulo,
         String isbn,
         Integer anoPublicacao,
         String genero,
-        @NotNull Long autorId) {
+        @NotNull(message = "O id do autor precisa existir")
+        Long autorId) {
 
 }

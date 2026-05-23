@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.escola.biblioteca.dto.AutorRequestDTO;
-import br.com.escola.biblioteca.dto.AutorResponseDTO;
 import br.com.escola.biblioteca.dto.LivroRequestDTO;
 import br.com.escola.biblioteca.dto.LivroResponseDTO;
 import br.com.escola.biblioteca.entity.*;
@@ -23,26 +21,30 @@ public class LivroService {
     @Autowired
     private AutorRepository autorRepository;
 
-    public List<LivroRequestDTO> listar() {
-        return livroRepository.findAll()
-                .stream()
+    public List<LivroResponseDTO> listarLivros() {
+    	List<Livro> livros = livroRepository.findAll();
+        return livros.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
+    
+    public LivroResponseDTO obterLivroPorId(Long id) {
+    	 Livro livro = buscarEntidadePorId(id);
+        return new LivroResponseDTO(id, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(), livro.getGenero(), livro.getAutor().getId(), livro.getAutor().getNome());
+      }
 
-    // methods
-    public LivroRequestDTO inserir(LivroRequestDTO dto) {
+    public LivroResponseDTO salvar(LivroRequestDTO dto) {
         Autor autor = autorRepository.findById(dto.autorId())
                 .orElseThrow(() -> new RuntimeException(
                         "Autor não encontrado com id: " + dto.autorId()));
-
+        
         Livro livro = new Livro();
         importeDadosParaEntidade(livro, dto);
         livro.setAutor(autor);
         return mapToResponseDTO(livroRepository.save(livro));
     }
 
-    public LivroRequestDTO atualizar(Long id, LivroRequestDTO dto) {
+    public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
         Livro livro = livroRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(
                         "Livro não encontrado com id: " + id));
@@ -71,6 +73,11 @@ public class LivroService {
         livro.setGenero(dto.genero());
     }
 
+    private Livro buscarEntidadePorId(Long id) {
+        return livroRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
+      } 
+    
     private LivroResponseDTO mapToResponseDTO(Livro livro) {
         return new LivroResponseDTO(
                 livro.getId(),
