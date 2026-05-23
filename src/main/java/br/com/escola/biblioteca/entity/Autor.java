@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,8 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name="autor")
@@ -22,22 +22,24 @@ public class Autor {
 
 	@Id 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Schema(description="Identificador unico do autor", example="1")
 	private Long id;
 	
-	@NotBlank(message="O nome do autor é obrigatório")
-	@Size(max=60, message="Tamanho máximo 60")
 	@Column (name = "nome", nullable = false, length = 60)
+	@Schema(description = "Nome do autor", example = "João da Silva", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String nome;
 	
-	@Size(max=20, message="Tamanho máximo 20")
 	@Column (name = "nacionalidade", length = 20)
+	@Schema(description="Nacionalidado do autor", example="Brasileiro")
 	private String nacionalidade;
 	
 	@Column(name = "data_nascimento")
+	@Schema(description="Data de nascimento do autor", example="2000-04-04")
 	private LocalDate dataNascimento;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "autor", fetch = FetchType.LAZY)
+	@Schema(description="Lista de livros do autor")
 	private List<Livro> livros;
 
 	public Autor() {

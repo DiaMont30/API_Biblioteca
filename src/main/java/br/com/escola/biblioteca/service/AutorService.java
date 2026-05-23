@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.escola.biblioteca.dto.AutorRequestDTO;
 import br.com.escola.biblioteca.dto.AutorResponseDTO;
 import br.com.escola.biblioteca.entity.Autor;
+import br.com.escola.biblioteca.exception.VerificarExisteException;
 import br.com.escola.biblioteca.repository.AutorRepository;
 
 @Service
@@ -36,6 +37,9 @@ public class AutorService {
   }
 
   public AutorResponseDTO atualizar(Long id, AutorRequestDTO dto) {
+	 if (!autorRepository.existsById(id)) {
+	        throw new VerificarExisteException("Não foi possivel atualizar o autor. Autor não encontrado com id: " + id);
+	      }
     Autor autor = buscarEntidadePorId(id);
     copiarDadosParaEntidade(autor, dto);
 
@@ -44,7 +48,7 @@ public class AutorService {
 
   public void deletar(Long id) {
     if (!autorRepository.existsById(id)) {
-      throw new RuntimeException("Autor não encontrado com id: " + id);
+      throw new VerificarExisteException("Não foi possivel deletar o autor. Autor não encontrado com id: " + id);
     }
     autorRepository.deleteById(id);
   }
@@ -53,7 +57,7 @@ public class AutorService {
 
   private Autor buscarEntidadePorId(Long id) {
     return autorRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Autor não encontrado com o id: " + id));
+        .orElseThrow(() -> new VerificarExisteException("Autor não encontrado com o id: " + id));
   }
 
   private void copiarDadosParaEntidade(Autor autor, AutorRequestDTO dto) {
