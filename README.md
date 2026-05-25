@@ -31,6 +31,9 @@ A atividade consiste no desenvolvimento de uma API de cadastro de autores e livr
 ```
 API_Biblioteca/src/main/java/br/com/escola/biblioteca
 │
+├── annotation
+|   └── ApiRespostasPadrao.java
+│
 ├── config
 |   └── SwaggerConfig.java
 |
