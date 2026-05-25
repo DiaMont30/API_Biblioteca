@@ -18,6 +18,7 @@ import br.com.escola.biblioteca.dto.AutorRequestDTO;
 import br.com.escola.biblioteca.dto.AutorResponseDTO;
 import br.com.escola.biblioteca.service.AutorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -49,7 +50,7 @@ public class AutorController {
 	@PostMapping("adicionar-autor")
 	@Operation(summary = "Cadastrar Autor", description = "Insere um novo autor na base de dados e retorna o objeto criado com seu ID gerado.")
 	@ApiResponse(responseCode = "201", description = "Autor criado com sucesso")
-	@ApiResponse(responseCode = "400", description = "Dados inválidos enviados no corpo da requisição")
+	@ApiResponse(responseCode = "400", description = "Dados inválidos enviados no corpo da requisição", content = @Content)
 	public ResponseEntity<AutorResponseDTO> adicionarAutor(@Valid @RequestBody AutorRequestDTO dto) {
 		return ResponseEntity.ok(autorService.salvar(dto));
 	}

@@ -19,6 +19,7 @@ import br.com.escola.biblioteca.dto.LivroRequestDTO;
 import br.com.escola.biblioteca.dto.LivroResponseDTO;
 import br.com.escola.biblioteca.service.LivroService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -49,7 +50,7 @@ public class LivroController {
 	@PostMapping("adicionar-livro")
 	@Operation(summary = "Cadastrar Livro", description = "Insere um novo livro na base de dados e retorna o objeto criado com seu ID gerado.")
 	@ApiResponse(responseCode = "201", description = "Livro criado com sucesso")
-	@ApiResponse(responseCode = "400", description = "Dados inválidos enviados no corpo da requisição")
+	@ApiResponse(responseCode = "400", description = "Dados inválidos enviados no corpo da requisição", content = @Content)
 	public ResponseEntity<LivroResponseDTO> adicionarLivro(@Valid @RequestBody LivroRequestDTO dto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(livroService.salvar(dto));
 
