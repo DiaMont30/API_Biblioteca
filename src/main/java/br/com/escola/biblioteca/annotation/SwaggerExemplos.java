@@ -2,17 +2,6 @@ package br.com.escola.biblioteca.annotation;
 
 public interface SwaggerExemplos {
 
-    String ERRO_400 = """
-            {
-                "status": 400,
-                "titulo": "Nao encontrado",
-                "dataHora": "25/05/2026 18:57:53",
-                "erros": [
-                    "Dados inválidos enviados no corpo da requisição."
-                ]
-            }
-            """;
-
     String ERRO_403 = """
             {
                 "status": 403,
