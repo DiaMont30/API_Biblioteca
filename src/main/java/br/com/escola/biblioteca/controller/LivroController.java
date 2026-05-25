@@ -59,6 +59,7 @@ public class LivroController {
 	@PutMapping("/atualizar-livro/{id}")
 	@Operation(summary = "Atualizar Livro", description = "Atualiza dados de um livro")
 	@ApiResponse(responseCode = "200", description = "Livro Atualizado")
+	@ApiResponse(responseCode = "400", description = "Dados inválidos enviados no corpo da requisição", content = @Content)
 	public ResponseEntity<LivroResponseDTO> atualizarLivro(@PathVariable Long id,
 			@Valid @RequestBody LivroRequestDTO dto) {
 		return ResponseEntity.ok(livroService.atualizar(id, dto));
