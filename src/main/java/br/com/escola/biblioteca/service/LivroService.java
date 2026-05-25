@@ -22,22 +22,23 @@ public class LivroService {
     private AutorRepository autorRepository;
 
     public List<LivroResponseDTO> listarLivros() {
-    	List<Livro> livros = livroRepository.findAll();
+        List<Livro> livros = livroRepository.findAll();
         return livros.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
-    
+
     public LivroResponseDTO obterLivroPorId(Long id) {
-    	 Livro livro = buscarEntidadePorId(id);
-        return new LivroResponseDTO(id, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(), livro.getGenero(), livro.getAutor().getId(), livro.getAutor().getNome());
-      }
+        Livro livro = buscarEntidadePorId(id);
+        return new LivroResponseDTO(id, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(), livro.getGenero(),
+                livro.getAutor().getId(), livro.getAutor().getNome());
+    }
 
     public LivroResponseDTO salvar(LivroRequestDTO dto) {
         Autor autor = autorRepository.findById(dto.autorId())
                 .orElseThrow(() -> new RuntimeException(
                         "Autor não encontrado com id: " + dto.autorId()));
-        
+
         Livro livro = new Livro();
         importeDadosParaEntidade(livro, dto);
         livro.setAutor(autor);
@@ -48,6 +49,7 @@ public class LivroService {
         Livro livro = livroRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(
                         "Livro não encontrado com id: " + id));
+
         Autor autor = autorRepository.findById(dto.autorId())
                 .orElseThrow(() -> new RuntimeException(
                         "Autor não encontrado com id: " + dto.autorId()));
@@ -75,9 +77,9 @@ public class LivroService {
 
     private Livro buscarEntidadePorId(Long id) {
         return livroRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
-      } 
-    
+                .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
+    }
+
     private LivroResponseDTO mapToResponseDTO(Livro livro) {
         return new LivroResponseDTO(
                 livro.getId(),
