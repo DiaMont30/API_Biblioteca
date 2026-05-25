@@ -1,6 +1,5 @@
 package br.com.escola.biblioteca.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -11,34 +10,30 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="livro")
+@Table(name = "livro")
 public class Livro {
 
-	@Id 
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotBlank(message = "O nome do livro é obrigatório")
-	@Size(max=30, message="Tamanho máximo 30")
-	@Column (name = "titulo", nullable = false, length = 30)
+
+	@Column(name = "titulo", nullable = false, length = 30)
 	private String titulo;
-	
+
 	@Column(name = "isbn", unique = true, length = 17)
 	private String isbn;
-	
+
 	@Column(name = "ano_publicacao")
 	private Integer anoPublicacao;
-	
+
 	@Column(name = "genero", length = 30)
 	private String genero;
-	
+
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name="id_autor")
+	@JoinColumn(name = "id_autor")
 	private Autor autor;
 
 	public Livro() {
@@ -100,5 +95,5 @@ public class Livro {
 	public void setAutor(Autor autor) {
 		this.autor = autor;
 	}
-	
+
 }

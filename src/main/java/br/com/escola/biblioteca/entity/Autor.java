@@ -13,29 +13,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="autor")
+@Table(name = "autor")
 public class Autor {
 
-	@Id 
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotBlank(message="O nome do autor é obrigatório")
-	@Size(max=60, message="Tamanho máximo 60")
-	@Column (name = "nome", nullable = false, length = 60)
+
+	@Column(name = "nome", nullable = false, length = 60)
 	private String nome;
-	
-	@Size(max=20, message="Tamanho máximo 20")
-	@Column (name = "nacionalidade", length = 20)
+
+	@Column(name = "nacionalidade", length = 20)
 	private String nacionalidade;
-	
+
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "autor", fetch = FetchType.LAZY)
 	private List<Livro> livros;
@@ -89,6 +84,5 @@ public class Autor {
 	public void setLivros(List<Livro> livros) {
 		this.livros = livros;
 	}
-	
-	
+
 }
