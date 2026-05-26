@@ -38,12 +38,6 @@ public class LivroService {
         }
 
         public LivroResponseDTO salvar(LivroRequestDTO dto) {
-                if (livroRepository.existsByIsbn(dto.isbn())) {
-                        throw new VerificarExisteException(
-                                        "Não foi possível cadastrar o livro. O ISBN '" + dto.isbn()
-                                                        + "' já está cadastrado.");
-                }
-
                 Autor autor = autorRepository.findById(dto.autorId())
                                 .orElseThrow(() -> new RuntimeException(
                                                 "Autor não encontrado com id: " + dto.autorId()));
@@ -55,15 +49,10 @@ public class LivroService {
         }
 
         public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
-                if (livroRepository.existsByIsbn(dto.isbn())) {
-                        throw new VerificarExisteException(
-                                        "Não foi possível atualizar o livro. O ISBN '" + dto.isbn()
-                                                        + "' já está cadastrado.");
-                }
-
                 Livro livro = livroRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException(
                                                 "Livro não encontrado com id: " + id));
+
                 Autor autor = autorRepository.findById(dto.autorId())
                                 .orElseThrow(() -> new VerificarExisteException(
                                                 "Não foi possível atualizar o livro. Autor não foi encontrado com o id: "
