@@ -28,6 +28,7 @@ public class LivroService {
                 return livros.stream()
                                 .map(this::mapToResponseDTO)
                                 .collect(Collectors.toList());
+
         }
 
         public LivroResponseDTO obterLivroPorId(Long id) {

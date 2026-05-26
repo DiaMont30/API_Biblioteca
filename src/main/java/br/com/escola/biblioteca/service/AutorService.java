@@ -37,9 +37,7 @@ public class AutorService {
   }
 
   public AutorResponseDTO atualizar(Long id, AutorRequestDTO dto) {
-	 if (!autorRepository.existsById(id)) {
-	        throw new VerificarExisteException("Não foi possivel atualizar o autor. Autor não encontrado com id: " + id);
-	      }
+
     Autor autor = buscarEntidadePorId(id);
     copiarDadosParaEntidade(autor, dto);
 
@@ -47,8 +45,10 @@ public class AutorService {
   }
 
   public void deletar(Long id) {
-    if (!autorRepository.existsById(id)) {
-      throw new VerificarExisteException("Não foi possivel deletar o autor. Autor não encontrado com id: " + id);
+	  Autor autor = buscarEntidadePorId(id); 
+	  
+    if (!autor.getLivros().isEmpty()) {
+        throw new VerificarExisteException("Não é possível deletar o autor pois ele possui livros cadastrados.");
     }
     autorRepository.deleteById(id);
   }
