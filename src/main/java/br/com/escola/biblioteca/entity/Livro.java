@@ -37,6 +37,11 @@ public class Livro {
 	@JoinColumn(name = "id_autor")
 	private Autor autor;
 
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "editora_id")
+	private Editora editora;
+
 	public Livro() {
 
 	}
