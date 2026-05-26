@@ -28,7 +28,6 @@ public class LivroService {
                 return livros.stream()
                                 .map(this::mapToResponseDTO)
                                 .collect(Collectors.toList());
-
         }
 
         public LivroResponseDTO obterLivroPorId(Long id) {
@@ -62,6 +61,7 @@ public class LivroService {
                 importeDadosParaEntidade(livro, dto);
                 livro.setAutor(autor);
                 return mapToResponseDTO(livroRepository.save(livro));
+
         }
 
         public void deletar(Long id) {
