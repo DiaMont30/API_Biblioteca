@@ -28,8 +28,9 @@ public class Livro {
 	@Column(name = "ano_publicacao")
 	private Integer anoPublicacao;
 
-	@Column(name = "genero", length = 30)
-	private String genero;
+	@ManyToOne
+	@JoinColumn(name = "id_genero")
+	private Genero genero;
 
 	@JsonBackReference
 	@ManyToOne
@@ -40,7 +41,7 @@ public class Livro {
 
 	}
 
-	public Livro(Long id, String titulo, String isbn, Integer anoPublicacao, String genero) {
+	public Livro(Long id, String titulo, String isbn, Integer anoPublicacao, Genero genero) {
 		this.id = id;
 		this.titulo = titulo;
 		this.isbn = isbn;
@@ -80,11 +81,11 @@ public class Livro {
 		this.anoPublicacao = anoPublicacao;
 	}
 
-	public String getGenero() {
+	public Genero getGenero() {
 		return genero;
 	}
 
-	public void setGenero(String genero) {
+	public void setGenero(Genero genero) {
 		this.genero = genero;
 	}
 
