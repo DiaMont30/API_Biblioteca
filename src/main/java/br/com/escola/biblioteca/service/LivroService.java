@@ -29,7 +29,7 @@ public class LivroService {
                                 .map(this::mapToResponseDTO)
                                 .collect(Collectors.toList());
         }
-
+  
         public LivroResponseDTO obterLivroPorId(Long id) {
                 Livro livro = buscarEntidadePorId(id);
                 return new LivroResponseDTO(id, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(),
@@ -61,6 +61,7 @@ public class LivroService {
                 importeDadosParaEntidade(livro, dto);
                 livro.setAutor(autor);
                 return mapToResponseDTO(livroRepository.save(livro));
+
         }
 
         public void deletar(Long id) {
