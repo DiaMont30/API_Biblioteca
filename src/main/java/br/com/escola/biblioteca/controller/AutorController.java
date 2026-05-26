@@ -57,6 +57,7 @@ public class AutorController {
 
 	@PutMapping("/atualizar-autor/{id}")
 	@Operation(summary = "Atualizar Autor", description = "Atualiza dados de um autor")
+	@ApiResponse(responseCode = "400", description = "Dados inválidos enviados no corpo da requisição", content = @Content)
 	@ApiResponse(responseCode = "200", description = "Autor Atualizado")
 	public ResponseEntity<AutorResponseDTO> atualizarAutor(@PathVariable Long id,
 			@Valid @RequestBody AutorRequestDTO dto) {

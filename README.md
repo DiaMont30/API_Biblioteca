@@ -33,6 +33,7 @@ API_Biblioteca/src/main/java/br/com/escola/biblioteca
 │
 ├── annotation
 |   └── ApiRespostasPadrao.java
+|   └── SwaggerExemplos.java
 │
 ├── config
 |   └── SwaggerConfig.java
