@@ -52,10 +52,6 @@ public class LivroService {
     }
 
     public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
-    	if (livroRepository.existsByIsbn(dto.isbn())) {
-            throw new VerificarExisteException(
-                "Não foi possível atualizar o livro. O ISBN '" + dto.isbn() + "' já está cadastrado.");
-        }
     	
         Livro livro = livroRepository.findById(id)
                 .orElseThrow(() -> new VerificarExisteException(
