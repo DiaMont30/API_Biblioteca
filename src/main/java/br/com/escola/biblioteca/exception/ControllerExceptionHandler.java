@@ -16,39 +16,37 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
-
+public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-		
-		List<String> erros = new ArrayList<>();	
+
+		List<String> erros = new ArrayList<>();
+
 		for (FieldError error : ex.getBindingResult().getFieldErrors()) {
 			erros.add(error.getField() + ": " + error.getDefaultMessage());
-		}	
+		}
+
 		ErroResposta erroResposta = new ErroResposta(
-				status.value(), 
-				"Existem Campos Inválidos, Confira o preenchimento", 
-				LocalDateTime.now(), 
-				erros
-		);
-		
+				status.value(),
+				"Existem Campos Inválidos, Confira o preenchimento",
+				LocalDateTime.now(),
+				erros);
+
 		return super.handleExceptionInternal(ex, erroResposta, headers, status, request);
 	}
-	
-	
+
 	@ExceptionHandler(VerificarExisteException.class)
 	public ResponseEntity<Object> handleAutor(VerificarExisteException ex, WebRequest request) {
-	    HttpStatus status = HttpStatus.NOT_FOUND;   
-	    
-	    ErroResposta erroResposta = new ErroResposta(
-	            status.value(),
-	            "Erro na validação de dados", 
-	            LocalDateTime.now(),
-	            List.of(ex.getMessage())
-	    );
+		HttpStatus status = HttpStatus.NOT_FOUND;
 
-	    return handleExceptionInternal(ex, erroResposta, new HttpHeaders(), status, request);
+		ErroResposta erroResposta = new ErroResposta(
+				status.value(),
+				"Erro na validação de dados",
+				LocalDateTime.now(),
+				List.of(ex.getMessage()));
+
+		return handleExceptionInternal(ex, erroResposta, new HttpHeaders(), status, request);
 	}
 }

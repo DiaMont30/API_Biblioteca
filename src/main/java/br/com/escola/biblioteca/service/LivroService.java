@@ -17,83 +17,82 @@ import br.com.escola.biblioteca.repository.LivroRepository;
 @Service
 public class LivroService {
 
-    @Autowired
-    private LivroRepository livroRepository;
+        @Autowired
+        private LivroRepository livroRepository;
 
-    @Autowired
-    private AutorRepository autorRepository;
+        @Autowired
+        private AutorRepository autorRepository;
 
-    public List<LivroResponseDTO> listarLivros() {
-    	List<Livro> livros = livroRepository.findAll();
-        return livros.stream()
-                .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
-    }
-    
-    public LivroResponseDTO obterLivroPorId(Long id) {
-    	 Livro livro = buscarEntidadePorId(id);
-        return new LivroResponseDTO(id, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(), livro.getGenero(), livro.getAutor().getId(), livro.getAutor().getNome());
-      }
-
-    public LivroResponseDTO salvar(LivroRequestDTO dto) { 	
-    	if (livroRepository.existsByIsbn(dto.isbn())) {
-            throw new VerificarExisteException(
-                "Não foi possível cadastrar o livro. O ISBN '" + dto.isbn() + "' já está cadastrado.");
+        public List<LivroResponseDTO> listarLivros() {
+                List<Livro> livros = livroRepository.findAll();
+                return livros.stream()
+                                .map(this::mapToResponseDTO)
+                                .collect(Collectors.toList());
         }
-    	
-        Autor autor = autorRepository.findById(dto.autorId())
-                .orElseThrow(() -> new VerificarExisteException(
-                        "Não foi possivel cadastrar o Livro. Autor não foi encontrado com o id: " + dto.autorId()));
-        
-        Livro livro = new Livro();
-        importeDadosParaEntidade(livro, dto);
-        livro.setAutor(autor);
-        return mapToResponseDTO(livroRepository.save(livro));
-    }
-
-    public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
-    	
-        Livro livro = livroRepository.findById(id)
-                .orElseThrow(() -> new VerificarExisteException(
-                        "Não foi possível atualizar o livro. Livro não foi encontrado com o id: " + id));
-        Autor autor = autorRepository.findById(dto.autorId())
-                .orElseThrow(() -> new VerificarExisteException(
-                        "Não foi possível atualizar o livro. Autor não foi encontrado com o id: " + dto.autorId()));
-
-        importeDadosParaEntidade(livro, dto);
-        livro.setAutor(autor);
-        return mapToResponseDTO(livroRepository.save(livro));
-    }
-
-    public void deletar(Long id) {
-        if (!livroRepository.existsById(id)) {
-            throw new VerificarExisteException(
-                    "Não foi possível deletar o livro. Livro não foi encontrado com o id: " + id);
+  
+        public LivroResponseDTO obterLivroPorId(Long id) {
+                Livro livro = buscarEntidadePorId(id);
+                return new LivroResponseDTO(id, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(),
+                                livro.getGenero(),
+                                livro.getAutor().getId(), livro.getAutor().getNome());
         }
 
-        livroRepository.deleteById(id);
-    }
+        public LivroResponseDTO salvar(LivroRequestDTO dto) {
+                Autor autor = autorRepository.findById(dto.autorId())
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Autor não encontrado com id: " + dto.autorId()));
 
-    private void importeDadosParaEntidade(Livro livro, LivroRequestDTO dto) {
-        livro.setTitulo(dto.titulo());
-        livro.setIsbn(dto.isbn());
-        livro.setAnoPublicacao(dto.anoPublicacao());
-        livro.setGenero(dto.genero());
-    }
+                Livro livro = new Livro();
+                importeDadosParaEntidade(livro, dto);
+                livro.setAutor(autor);
+                return mapToResponseDTO(livroRepository.save(livro));
+        }
 
-    private Livro buscarEntidadePorId(Long id) {
-        return livroRepository.findById(id)
-            .orElseThrow(() -> new VerificarExisteException("Livro não encontrado com o id: " + id));
-      } 
-    
-    private LivroResponseDTO mapToResponseDTO(Livro livro) {
-        return new LivroResponseDTO(
-                livro.getId(),
-                livro.getTitulo(),
-                livro.getIsbn(),
-                livro.getAnoPublicacao(),
-                livro.getGenero(),
-                livro.getAutor().getId(),
-                livro.getAutor().getNome());
-    }
+        public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
+                Livro livro = livroRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Livro não encontrado com id: " + id));
+
+                Autor autor = autorRepository.findById(dto.autorId())
+                                .orElseThrow(() -> new VerificarExisteException(
+                                                "Não foi possível atualizar o livro. Autor não foi encontrado com o id: "
+                                                                + dto.autorId()));
+
+                importeDadosParaEntidade(livro, dto);
+                livro.setAutor(autor);
+                return mapToResponseDTO(livroRepository.save(livro));
+
+        }
+
+        public void deletar(Long id) {
+                if (!livroRepository.existsById(id)) {
+                        throw new VerificarExisteException(
+                                        "Não foi possível deletar o livro. Livro não foi encontrado com o id: " + id);
+                }
+
+                livroRepository.deleteById(id);
+        }
+
+        private void importeDadosParaEntidade(Livro livro, LivroRequestDTO dto) {
+                livro.setTitulo(dto.titulo());
+                livro.setIsbn(dto.isbn());
+                livro.setAnoPublicacao(dto.anoPublicacao());
+                livro.setGenero(dto.genero());
+        }
+
+        private Livro buscarEntidadePorId(Long id) {
+                return livroRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
+        }
+
+        private LivroResponseDTO mapToResponseDTO(Livro livro) {
+                return new LivroResponseDTO(
+                                livro.getId(),
+                                livro.getTitulo(),
+                                livro.getIsbn(),
+                                livro.getAnoPublicacao(),
+                                livro.getGenero(),
+                                livro.getAutor().getId(),
+                                livro.getAutor().getNome());
+        }
 }
