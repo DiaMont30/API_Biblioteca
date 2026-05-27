@@ -38,13 +38,8 @@ public class LivroService {
         }
 
         public LivroResponseDTO obterLivroPorId(Long id) {
-
-                Livro livro = buscarLivroPorId(id);
-
-                return new LivroResponseDTO(id, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(),
-                                livro.getGenero(),
-                                livro.getAutor().getId(), livro.getAutor().getNome());
-
+                Livro livro = buscarEntidadePorId(id);
+                return mapToResponseDTO(livro);
         }
 
         public LivroResponseDTO salvar(LivroRequestDTO dto) {
@@ -62,7 +57,7 @@ public class LivroService {
                                                 "Editora não encontrada com id: " + dto.editoraId()));
 
                 Livro livro = new Livro();
-                copiarDadosParaEntidade(livro, dto);
+                importeDadosParaEntidade(livro, dto);
 
                 // Seta os objetos reais na entidade
                 livro.setAutor(autor);
@@ -73,7 +68,7 @@ public class LivroService {
         }
 
         public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
-                Livro livro = buscarLivroPorId(id);
+                Livro livro = buscarEntidadePorId(id);
 
                 Autor autor = autorRepository.findById(dto.autorId())
                                 .orElseThrow(() -> new VerificarExisteException(
@@ -87,12 +82,13 @@ public class LivroService {
                                 .orElseThrow(() -> new VerificarExisteException(
                                                 "Editora não encontrada com id: " + dto.editoraId()));
 
-                copiarDadosParaEntidade(livro, dto);
+                importeDadosParaEntidade(livro, dto);
                 livro.setAutor(autor);
                 livro.setGenero(genero);
                 livro.setEditora(editora);
 
                 return mapToResponseDTO(livroRepository.save(livro));
+
         }
 
         public void deletar(Long id) {
@@ -104,15 +100,15 @@ public class LivroService {
                 livroRepository.deleteById(id);
         }
 
-        private Livro buscarLivroPorId(Long id) {
-                return livroRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
-        }
-
-        private void copiarDadosParaEntidade(Livro livro, LivroRequestDTO dto) {
+        private void importeDadosParaEntidade(Livro livro, LivroRequestDTO dto) {
                 livro.setTitulo(dto.titulo());
                 livro.setIsbn(dto.isbn());
                 livro.setAnoPublicacao(dto.anoPublicacao());
+        }
+
+        private Livro buscarEntidadePorId(Long id) {
+                return livroRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
         }
 
         private LivroResponseDTO mapToResponseDTO(Livro livro) {
