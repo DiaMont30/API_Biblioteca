@@ -18,8 +18,7 @@ import br.com.escola.biblioteca.repository.LivroRepository;
 
 @Service
 public class EditoraService {
-    private final AutorRepository autorRepository;
-private final AutorController autorController;
+   
   
 
     @Autowired
@@ -28,10 +27,7 @@ private final AutorController autorController;
     @Autowired
     private LivroRepository livroRepository;
 
-    EditoraService(AutorController autorController, AutorRepository autorRepository) {
-        this.autorController = autorController;
-        this.autorRepository = autorRepository;
-    }
+    
 
     public List<EditoraResponseDTO> listarEditoras() {
         List<Editora> editoras = editoraRepository.findAll();

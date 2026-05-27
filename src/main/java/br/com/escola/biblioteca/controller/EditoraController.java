@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -49,7 +50,7 @@ public class EditoraController {
         return ResponseEntity.ok(editoraService.obterEditoraPorId(id));
     }
     
-    @PostMapping("adicionar-editora")
+    @PostMapping("/adicionar-editora")
     @Operation(summary = "Cadastrar Editora", description = "Insere uma nova editora na base de dados e retorna o objeto criado com seu ID gerado.")
     @ApiResponse(responseCode = "201", description = "Editora criada com sucesso")
     @ApiResponse(responseCode = "400", description = "Dados inválidos enviados no corpo da requisição", content = @Content)
@@ -57,7 +58,7 @@ public class EditoraController {
         return ResponseEntity.status(HttpStatus.CREATED).body(editoraService.salvar(dto));
     }
     
-    @GetMapping("/atualizar-editora/{id}")
+    @PutMapping("/atualizar-editora/{id}")
    @Operation(summary = "Atualizar Editora", description = "Atualiza dados de uma editora")
    @ApiResponse(responseCode = "200", description = "Editora Atualizada")
 @ApiResponse(responseCode="400", description = "Dados inválidos enviados no corpo da requisição", content = @Content) 
