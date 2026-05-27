@@ -15,6 +15,7 @@ import br.com.escola.biblioteca.dto.UsuarioRequestDTO;
 import br.com.escola.biblioteca.entity.Usuario;
 import br.com.escola.biblioteca.repository.UsuarioRepository;
 import br.com.escola.biblioteca.service.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Autenticação", description = "Rotas de autenticação da aplicação")
 public class AutenticacaoController {
 
   @Autowired
