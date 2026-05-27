@@ -23,11 +23,8 @@ public class Usuario implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  private String email;
-
   private String nome;
-
+  private String email;
   private String senha;
 
   @Enumerated(EnumType.STRING)
@@ -38,7 +35,6 @@ public class Usuario implements UserDetails {
   }
 
   public Usuario(String email, String nome, String senha, UsuarioRole role) {
-    super();
     this.email = email;
     this.nome = nome;
     this.senha = senha;
@@ -53,20 +49,20 @@ public class Usuario implements UserDetails {
     this.id = id;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
   public String getNome() {
     return nome;
   }
 
   public void setNome(String nome) {
     this.nome = nome;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public String getSenha() {
