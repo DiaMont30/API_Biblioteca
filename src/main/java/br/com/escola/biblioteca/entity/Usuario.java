@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name = "usuarios")
@@ -25,6 +26,7 @@ public class Usuario implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Email
   @Column(nullable = false, unique = true, length = 100)
   private String email;
 
@@ -32,7 +34,6 @@ public class Usuario implements UserDetails {
   private String nome;
 
   @Column(nullable = false, length = 60)
-
   private String senha;
 
   @Enumerated(EnumType.STRING)
