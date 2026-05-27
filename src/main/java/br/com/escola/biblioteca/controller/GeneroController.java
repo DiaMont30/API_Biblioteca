@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 @Tag(name = "Gêneros", description = "Gerenciamento das categorias de livros")
 public class GeneroController {
 
-	@Autowired
+    @Autowired
     private GeneroService generoService;
 
     @GetMapping("/todos-os-generos")
@@ -44,7 +44,8 @@ public class GeneroController {
     }
 
     @PutMapping("/atualizar-genero/{id}")
-    public ResponseEntity<GeneroResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody GeneroRequestDTO dto) {
+    public ResponseEntity<GeneroResponseDTO> atualizar(@PathVariable Long id,
+            @Valid @RequestBody GeneroRequestDTO dto) {
         return ResponseEntity.ok(generoService.atualizar(id, dto));
     }
 

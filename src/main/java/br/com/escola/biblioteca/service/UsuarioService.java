@@ -42,6 +42,8 @@ public class UsuarioService {
         return mapToResponseDTO(usuarioRepository.save(usuario));
     }
 
+    // public UsuarioResponseDTO salvar(UsuarioRequestDTO dto){}
+
     public void deletar(long id) {
         buscarUsuarioPorId(id);
 
