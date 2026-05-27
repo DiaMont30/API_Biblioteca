@@ -17,12 +17,21 @@ public record LivroResponseDTO(
     	@Schema(description = "Ano em que o livro foi publicado", example = "2024")
         Integer anoPublicacao,
         
-    	@Schema(description = "Gênero literário do livro", example = "Ficção Científica")
-        String genero,
+    	@Schema(description = "ID dogênero vinculado a este livro", example = "1")
+        Long generoID, 
+        
+    	@Schema(description = "nome do gênero do livro", example = "Ficção Científica")
+        String generoNome,
         
         @Schema(description = "ID do autor vinculado a este livro", example = "1")
         Long autorId,
         
         @Schema(description = "Nome do autor vinculado a este livro", example = "João da Silva")
-        String autorNome) {
+        String autorNome, 
+        
+        @Schema(description = "ID da editora vinculado a este livro", example = "1")
+        Long editoraId,
+        
+        @Schema(description = "Nome da editora vinculada a este livro", example = "Vozes")
+        String editoraNome) {
 }

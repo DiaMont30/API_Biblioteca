@@ -2,7 +2,7 @@ package br.com.escola.biblioteca.entity;
 
 import java.util.List;
 
-import br.com.escola.biblioteca.enums.SiglaGeneroEnum;
+import br.com.escola.biblioteca.enums.SiglaGenero;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,9 +24,9 @@ public class Genero {
     @Column(nullable = false, length = 50)
     private String nome;
 
-    @Enumerated(EnumType.STRING) // Salva o nome do enum (ex: "ROMANCE")
+    @Enumerated(EnumType.STRING) 
     @Column(nullable = false, length = 10)
-    private SiglaGeneroEnum sigla;
+    private SiglaGenero sigla;
 
     @OneToMany(mappedBy = "genero")
     private List<Livro> livros;
@@ -35,7 +35,7 @@ public class Genero {
 		super();
 	}
 
-	public Genero(Long id, String nome, SiglaGeneroEnum sigla, List<Livro> livros) {
+	public Genero(Long id, String nome, SiglaGenero sigla, List<Livro> livros) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -61,11 +61,11 @@ public class Genero {
 		this.nome = nome;
 	}
 
-	public SiglaGeneroEnum getSigla() {
+	public SiglaGenero getSigla() {
 		return sigla;
 	}
 
-	public void setSigla(SiglaGeneroEnum sigla) {
+	public void setSigla(SiglaGenero sigla) {
 		this.sigla = sigla;
 	}
 
