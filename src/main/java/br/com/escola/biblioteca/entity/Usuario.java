@@ -31,11 +31,12 @@ public class Usuario implements UserDetails {
   private UsuarioRole role;
 
   public Usuario() {
+    super();
   }
 
-  public Usuario(String nome, String email, String senha, UsuarioRole role) {
-    this.nome = nome;
+  public Usuario(String email, String nome, String senha, UsuarioRole role) {
     this.email = email;
+    this.nome = nome;
     this.senha = senha;
     this.role = role;
   }
