@@ -2,6 +2,15 @@ package br.com.escola.biblioteca.annotation;
 
 public interface SwaggerExemplos {
 
+    String SUCESSO_201 = """
+            {
+                "status": 201,
+                "titulo": "Usuário criado com sucesso",
+                "dataHora": "25/05/2026 18:57:53",
+
+                }
+            """;
+
     String ERRO_403 = """
             {
                 "status": 403,

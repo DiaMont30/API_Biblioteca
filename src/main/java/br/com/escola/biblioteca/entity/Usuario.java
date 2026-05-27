@@ -26,12 +26,12 @@ public class Usuario implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false, length = 60)
+  private String nome;
+
   @Email
   @Column(nullable = false, unique = true, length = 100)
   private String email;
-
-  @Column(nullable = false, length = 60)
-  private String nome;
 
   @Column(nullable = false, length = 60)
   private String senha;
