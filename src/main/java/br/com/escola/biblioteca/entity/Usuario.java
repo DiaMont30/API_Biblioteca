@@ -23,7 +23,8 @@ public class Usuario implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String login;
+  private String nome;
+  private String email;
   private String senha;
 
   @Enumerated(EnumType.STRING)
@@ -32,8 +33,9 @@ public class Usuario implements UserDetails {
   public Usuario() {
   }
 
-  public Usuario(String login, String senha, UsuarioRole role) {
-    this.login = login;
+  public Usuario(String nome, String email, String senha, UsuarioRole role) {
+    this.nome = nome;
+    this.email = email;
     this.senha = senha;
     this.role = role;
   }
@@ -46,12 +48,20 @@ public class Usuario implements UserDetails {
     this.id = id;
   }
 
-  public String getLogin() {
-    return login;
+  public String getNome() {
+    return nome;
   }
 
-  public void setLogin(String login) {
-    this.login = login;
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public String getSenha() {
@@ -87,7 +97,7 @@ public class Usuario implements UserDetails {
 
   @Override
   public String getUsername() {
-    return login;
+    return email;
   }
 
   @Override
