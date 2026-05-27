@@ -9,6 +9,6 @@ public record GeneroRequestDTO(
 
         @NotBlank(message = "O nome do gênero é obrigatório e não pode ser vazio") @Schema(description = "Nome do gênero literário", example = "Ficção Científica", requiredMode = Schema.RequiredMode.REQUIRED) String nome,
 
-        @NotNull(message = "A sigla do gênero é obrigatória e não pode ser vazio") @Schema(description = "Sigla do gênero literário", example = "FC", requiredMode = Schema.RequiredMode.REQUIRED) SiglaGenero sigla) {
+        @NotNull(message = "A sigla do gênero é obrigatória e não pode ser vazio") @Schema(description = "Sigla do gênero literário", example = "FICCAO", requiredMode = Schema.RequiredMode.REQUIRED) SiglaGenero sigla) {
 
 }

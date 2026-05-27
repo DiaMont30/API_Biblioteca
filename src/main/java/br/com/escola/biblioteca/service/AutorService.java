@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.escola.biblioteca.dto.AutorRequestDTO;
 import br.com.escola.biblioteca.dto.AutorResponseDTO;
+import br.com.escola.biblioteca.dto.LivroSimplesDTO;
 import br.com.escola.biblioteca.entity.Autor;
 import br.com.escola.biblioteca.exception.VerificarExisteException;
 import br.com.escola.biblioteca.repository.AutorRepository;
@@ -26,7 +27,7 @@ public class AutorService {
 
   public AutorResponseDTO obterAutorPorId(Long id) {
     Autor autor = buscarEntidadePorId(id);
-    return new AutorResponseDTO(id, autor.getNome(), autor.getNacionalidade(), autor.getDataNascimento(), autor.getLivros());
+    return mapToResponseDTO(autor);
   }
 
   public AutorResponseDTO salvar(AutorRequestDTO dto) {
@@ -53,7 +54,6 @@ public class AutorService {
     autorRepository.deleteById(id);
   }
 
-  // Métodos
 
   private Autor buscarEntidadePorId(Long id) {
     return autorRepository.findById(id)
@@ -67,11 +67,23 @@ public class AutorService {
   }
 
   private AutorResponseDTO mapToResponseDTO(Autor autor) {
-    return new AutorResponseDTO(
-        autor.getId(),
-        autor.getNome(),
-        autor.getNacionalidade(),
-        autor.getDataNascimento(),
-        autor.getLivros());
+      List<LivroSimplesDTO> livrosDTO = null;
+      if (autor.getLivros() != null) {
+          livrosDTO = autor.getLivros().stream()
+              .map(livro -> new LivroSimplesDTO(
+                  livro.getId(),
+                  livro.getTitulo(),
+                  livro.getIsbn(),
+                  livro.getAnoPublicacao()
+              ))
+              .collect(Collectors.toList());
+      }
+      return new AutorResponseDTO(
+          autor.getId(),
+          autor.getNome(),
+          autor.getNacionalidade(),
+          autor.getDataNascimento(),
+          livrosDTO
+      );
   }
 }
