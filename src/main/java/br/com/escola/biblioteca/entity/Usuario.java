@@ -34,9 +34,9 @@ public class Usuario implements UserDetails {
     super();
   }
 
-  public Usuario(String email, String nome, String senha, UsuarioRole role) {
-    this.email = email;
+  public Usuario(String nome, String email, String senha, UsuarioRole role) {
     this.nome = nome;
+    this.email = email;
     this.senha = senha;
     this.role = role;
   }
