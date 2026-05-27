@@ -12,7 +12,6 @@ import br.com.escola.biblioteca.entity.Autor;
 import br.com.escola.biblioteca.entity.Editora;
 import br.com.escola.biblioteca.entity.Genero;
 import br.com.escola.biblioteca.entity.Livro;
-import br.com.escola.biblioteca.exception.VerificarExisteException;
 import br.com.escola.biblioteca.repository.AutorRepository;
 import br.com.escola.biblioteca.repository.EditoraRepository;
 import br.com.escola.biblioteca.repository.GeneroRepository;
@@ -23,10 +22,13 @@ public class LivroService {
 
         @Autowired
         private LivroRepository livroRepository;
+
         @Autowired
         private AutorRepository autorRepository;
+
         @Autowired
         private GeneroRepository generoRepository;
+
         @Autowired
         private EditoraRepository editoraRepository;
 
@@ -38,23 +40,17 @@ public class LivroService {
         }
 
         public LivroResponseDTO obterLivroPorId(Long id) {
-                Livro livro = buscarEntidadePorId(id);
+                Livro livro = buscarLivroPorId(id);
                 return mapToResponseDTO(livro);
         }
 
         public LivroResponseDTO salvar(LivroRequestDTO dto) {
                 // Busca as 3 entidades obrigatórias
-                Autor autor = autorRepository.findById(dto.autorId())
-                                .orElseThrow(() -> new VerificarExisteException(
-                                                "Autor não encontrado com id: " + dto.autorId()));
+                Autor autor = buscarAutorPorId(dto.autorId());
 
-                Genero genero = generoRepository.findById(dto.generoId())
-                                .orElseThrow(() -> new VerificarExisteException(
-                                                "Gênero não encontrado com id: " + dto.generoId()));
+                Genero genero = buscarGeneroPorId(dto.generoId());
 
-                Editora editora = editoraRepository.findById(dto.editoraId())
-                                .orElseThrow(() -> new VerificarExisteException(
-                                                "Editora não encontrada com id: " + dto.editoraId()));
+                Editora editora = buscarEditoraPorId(dto.editoraId());
 
                 Livro livro = new Livro();
                 importeDadosParaEntidade(livro, dto);
@@ -68,19 +64,13 @@ public class LivroService {
         }
 
         public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
-                Livro livro = buscarEntidadePorId(id);
+                Livro livro = buscarLivroPorId(id);
 
-                Autor autor = autorRepository.findById(dto.autorId())
-                                .orElseThrow(() -> new VerificarExisteException(
-                                                "Autor não encontrado com id: " + dto.autorId()));
+                Autor autor = buscarAutorPorId(dto.autorId());
 
-                Genero genero = generoRepository.findById(dto.generoId())
-                                .orElseThrow(() -> new VerificarExisteException(
-                                                "Gênero não encontrado com id: " + dto.generoId()));
+                Genero genero = buscarGeneroPorId(dto.generoId());
 
-                Editora editora = editoraRepository.findById(dto.editoraId())
-                                .orElseThrow(() -> new VerificarExisteException(
-                                                "Editora não encontrada com id: " + dto.editoraId()));
+                Editora editora = buscarEditoraPorId(dto.editoraId());
 
                 importeDadosParaEntidade(livro, dto);
                 livro.setAutor(autor);
@@ -92,10 +82,7 @@ public class LivroService {
         }
 
         public void deletar(Long id) {
-                if (!livroRepository.existsById(id)) {
-                        throw new VerificarExisteException(
-                                        "Não foi possível deletar o livro. Livro não foi encontrado com o id: " + id);
-                }
+                buscarLivroPorId(id);
 
                 livroRepository.deleteById(id);
         }
@@ -106,9 +93,24 @@ public class LivroService {
                 livro.setAnoPublicacao(dto.anoPublicacao());
         }
 
-        private Livro buscarEntidadePorId(Long id) {
+        private Livro buscarLivroPorId(Long id) {
                 return livroRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
+        }
+
+        private Autor buscarAutorPorId(Long id) {
+                return autorRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Autor não encontrado com o id: " + id));
+        }
+
+        private Genero buscarGeneroPorId(Long id) {
+                return generoRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Gênero não encontrado com o id: " + id));
+        }
+
+        private Editora buscarEditoraPorId(Long id) {
+                return editoraRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Editora não encontrada com o id: " + id));
         }
 
         private LivroResponseDTO mapToResponseDTO(Livro livro) {
