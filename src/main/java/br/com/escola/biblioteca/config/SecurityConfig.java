@@ -32,6 +32,7 @@ public class SecurityConfig {
             // Rotas liberadas
             .requestMatchers(HttpMethod.POST, "/auth/autenticar").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/registrar").permitAll()
+            .requestMatchers("/error").permitAll()
 
             // Rotas autenticadas
             .anyRequest().authenticated())
