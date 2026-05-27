@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,6 +47,19 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 				"Erro na validação de dados",
 				LocalDateTime.now(),
 				List.of(ex.getMessage()));
+
+		return handleExceptionInternal(ex, erroResposta, new HttpHeaders(), status, request);
+	}
+
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<Object> handleBadCredentials(BadCredentialsException ex, WebRequest request) {
+		HttpStatus status = HttpStatus.FORBIDDEN;
+
+		ErroResposta erroResposta = new ErroResposta(
+				status.value(),
+				"Acesso Negado",
+				LocalDateTime.now(),
+				List.of("E-mail ou senha incorretos. Tente novamente."));
 
 		return handleExceptionInternal(ex, erroResposta, new HttpHeaders(), status, request);
 	}

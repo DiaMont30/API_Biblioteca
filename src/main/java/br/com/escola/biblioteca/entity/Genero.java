@@ -18,32 +18,29 @@ import jakarta.persistence.Table;
 public class Genero {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String nome;
+	@Column(nullable = false, length = 50)
+	private String nome;
 
-    @Enumerated(EnumType.STRING) 
-    @Column(nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sigla", length = 3, nullable = false) 
     private SiglaGenero sigla;
 
-    @OneToMany(mappedBy = "genero")
-    private List<Livro> livros;
+	@OneToMany(mappedBy = "genero")
+	private List<Livro> livros;
 
 	public Genero() {
 		super();
 	}
 
 	public Genero(Long id, String nome, SiglaGenero sigla, List<Livro> livros) {
-		super();
 		this.id = id;
 		this.nome = nome;
 		this.sigla = sigla;
 		this.livros = livros;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -76,5 +73,5 @@ public class Genero {
 	public void setLivros(List<Livro> livros) {
 		this.livros = livros;
 	}
-	
+
 }
