@@ -28,7 +28,7 @@ public class GeneroController {
 	@Autowired
     private GeneroService generoService;
 
-    @GetMapping
+    @GetMapping("/todos-os-generos")
     public ResponseEntity<List<GeneroResponseDTO>> listar() {
         return ResponseEntity.ok(generoService.listarTodos());
     }
@@ -38,17 +38,17 @@ public class GeneroController {
         return ResponseEntity.ok(generoService.buscarPorId(id));
     }
 
-    @PostMapping
+    @PostMapping("/adicionar-genero")
     public ResponseEntity<GeneroResponseDTO> cadastrar(@Valid @RequestBody GeneroRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(generoService.salvar(dto));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar-genero/{id}")
     public ResponseEntity<GeneroResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody GeneroRequestDTO dto) {
         return ResponseEntity.ok(generoService.atualizar(id, dto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar-livro/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         generoService.deletar(id);
         return ResponseEntity.noContent().build();
