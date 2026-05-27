@@ -47,6 +47,7 @@ public class LivroService {
         
         
         public LivroResponseDTO salvar(LivroRequestDTO dto) {
+<<<<<<< Updated upstream
                 Autor autor = autorRepository.findById(dto.autorId())
                                 .orElseThrow(() -> new RuntimeException(
                                                 "Autor não encontrado com id: " + dto.autorId()));
@@ -60,6 +61,8 @@ public class LivroService {
         public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
                 Livro livro = buscarLivroPorId(id);
             // Busca as 3 entidades obrigatórias
+=======
+>>>>>>> Stashed changes
             Autor autor = autorRepository.findById(dto.autorId())
                     .orElseThrow(() -> new VerificarExisteException("Autor não encontrado com id: " + dto.autorId()));
 
@@ -72,7 +75,6 @@ public class LivroService {
             Livro livro = new Livro();
             importeDadosParaEntidade(livro, dto);
             
-            // Seta os objetos reais na entidade
             livro.setAutor(autor);
             livro.setGenero(genero);
             livro.setEditora(editora);
