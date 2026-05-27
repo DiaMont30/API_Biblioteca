@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.escola.biblioteca.enums.UsuarioRole;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,10 +25,13 @@ public class Usuario implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false, unique = true, length = 100)
   private String email;
 
+  @Column(nullable = false, length = 60)
   private String nome;
 
+  @Column(nullable = false, length = 60)
   private String senha;
 
   @Enumerated(EnumType.STRING)
