@@ -24,9 +24,9 @@ public class Genero {
 	@Column(nullable = false, length = 50)
 	private String nome;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 5)
-	private SiglaGenero sigla;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sigla", length = 3, nullable = false) 
+    private SiglaGenero sigla;
 
 	@OneToMany(mappedBy = "genero")
 	private List<Livro> livros;
