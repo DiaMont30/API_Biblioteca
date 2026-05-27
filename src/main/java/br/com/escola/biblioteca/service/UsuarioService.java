@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.escola.biblioteca.dto.UsuarioRequestDTO;
+import br.com.escola.biblioteca.dto.UsuarioAtualizarDTO;
 import br.com.escola.biblioteca.dto.UsuarioResponseDTO;
 import br.com.escola.biblioteca.entity.Usuario;
 import br.com.escola.biblioteca.repository.UsuarioRepository;
@@ -35,14 +35,24 @@ public class UsuarioService {
 
     }
 
-    public UsuarioResponseDTO atualizar(Long id, UsuarioRequestDTO dto) {
+    public UsuarioResponseDTO atualizar(Long id, UsuarioAtualizarDTO dto) {
         Usuario usuario = buscarUsuarioPorId(id);
-        copiarDadosParaEntidade(usuario, dto);
+        usuario.setNome(dto.nome());
+        usuario.setEmail(dto.email());
 
         return mapToResponseDTO(usuarioRepository.save(usuario));
     }
 
-    // public UsuarioResponseDTO salvar(UsuarioRequestDTO dto){}
+    public void alterarSenha(Long id, String senhaAntiga, String novaSenha) {
+        Usuario usuario = buscarUsuarioPorId(id);
+
+        if (!passwordEncoder.matches(senhaAntiga, usuario.getSenha())) {
+            throw new RuntimeException("A senha antiga está incorreta.");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        usuarioRepository.save(usuario);
+    }
 
     public void deletar(long id) {
         buscarUsuarioPorId(id);
@@ -53,13 +63,6 @@ public class UsuarioService {
     private Usuario buscarUsuarioPorId(Long id) {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o id: " + id));
-    }
-
-    private void copiarDadosParaEntidade(Usuario usuario, UsuarioRequestDTO dto) {
-        usuario.setSenha(passwordEncoder.encode(dto.senha()));
-        usuario.setNome(dto.nome());
-        usuario.setEmail(dto.email());
-        usuario.setRole(dto.role());
     }
 
     private UsuarioResponseDTO mapToResponseDTO(Usuario usuario) {
