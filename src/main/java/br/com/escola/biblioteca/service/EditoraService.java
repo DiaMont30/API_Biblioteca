@@ -1,7 +1,5 @@
 package br.com.escola.biblioteca.service;
 
-import br.com.escola.biblioteca.controller.AutorController;
-import br.com.escola.biblioteca.repository.AutorRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +42,9 @@ public class EditoraService {
     }
 
     public EditoraResponseDTO salvar(EditoraRequestDTO dto) {
+        if (editoraRepository.findByCnpj(dto.cnpj()).isPresent()) {
+        throw new VerificarExisteException("Não foi possível salvar. O CNPJ '" + dto.cnpj() + "' já está cadastrado.");
+        }
         Editora editora = new Editora();
         editora.setNome(dto.nome());
         editora.setCnpj(dto.cnpj());
