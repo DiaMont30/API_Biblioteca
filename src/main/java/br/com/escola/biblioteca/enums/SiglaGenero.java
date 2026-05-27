@@ -1,7 +1,7 @@
 package br.com.escola.biblioteca.enums;
 
 
-public enum SiglaGeneroEnum {
+public enum SiglaGenero {
 	ROMANCE("ROM"),
     DRAMA("DRM"),
     FICCAO("FIC"),
@@ -10,11 +10,11 @@ public enum SiglaGeneroEnum {
 
     private final String sigla;
 
-    SiglaGeneroEnum(String sigla) {
+    SiglaGenero(String sigla) {
         this.sigla = sigla;
     }
     
-	public String getSigla() {
+	public String getSiglaAbreviada() {
 		return this.sigla;
 	}
 }

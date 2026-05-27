@@ -20,11 +20,16 @@ public record LivroRequestDTO(
     	@Schema(description = "Ano em que o livro foi publicado", example = "2024")
         Integer anoPublicacao,
         
-    	@Schema(description = "Gênero literário do livro", example = "Ficção Científica")
-        String genero,
+        @NotNull(message = "O id do gênero é obrigatório")
+        @Schema(description = "ID do gênero previamente cadastrado", example = "1")
+        Long generoId,
         
         @NotNull(message = "O id do autor é obrigatório")
         @Schema(description = "ID do autor previamente cadastrado", example = "1")
-        Long autorId) {
+        Long autorId,
+        
+        @NotNull(message = "O id da editora é obrigatório")
+        @Schema(description = "ID da editora previamente cadastrada", example = "1")
+        Long editoraId) {
 
 }
