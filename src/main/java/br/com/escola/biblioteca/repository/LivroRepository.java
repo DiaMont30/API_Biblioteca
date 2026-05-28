@@ -10,4 +10,5 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
 
     boolean existsByEditoraId(Long id);
 
+    boolean existsByIsbn(String isbn);
 }
