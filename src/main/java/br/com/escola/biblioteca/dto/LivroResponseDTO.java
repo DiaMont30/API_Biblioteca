@@ -19,7 +19,7 @@ public record LivroResponseDTO(
         Integer anoPublicacao,
         
     	@Schema(description = "ID dogênero vinculado a este livro", example = "1")
-        Long generoID, 
+        Long generoId, 
         
     	@Schema(description = "A sigla do gênero do livro", example = "FIC")
         SiglaGenero generoSigla,

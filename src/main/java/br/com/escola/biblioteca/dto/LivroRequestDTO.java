@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 public record LivroRequestDTO(
 		
         @NotBlank(message = "O nome do livro é obrigatório")
-        @Size(max=30, message="Campo não pode exceder 30 de tamanho")
+        @Size(max=60, message="Campo não pode exceder 60 de tamanho")
     	@Schema(description = "Titulo do livro", example = "O Pequeno Principe", requiredMode = Schema.RequiredMode.REQUIRED)
         String titulo,
         
