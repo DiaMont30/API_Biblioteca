@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.escola.biblioteca.dto.UsuarioAtualizarDTO;
 import br.com.escola.biblioteca.dto.UsuarioResponseDTO;
 import br.com.escola.biblioteca.entity.Usuario;
+import br.com.escola.biblioteca.exception.VerificarExisteException;
 import br.com.escola.biblioteca.repository.UsuarioRepository;
 
 @Service
@@ -31,7 +32,7 @@ public class UsuarioService {
     public UsuarioResponseDTO listarUsuarioPorId(Long id) {
         Usuario usuario = buscarUsuarioPorId(id);
 
-        return new UsuarioResponseDTO(id, usuario.getNome(), usuario.getEmail(), usuario.getRole());
+        return mapToResponseDTO(usuario);
 
     }
 
@@ -47,7 +48,7 @@ public class UsuarioService {
         Usuario usuario = buscarUsuarioPorId(id);
 
         if (!passwordEncoder.matches(senhaAntiga, usuario.getSenha())) {
-            throw new RuntimeException("A senha antiga está incorreta.");
+            throw new VerificarExisteException("A senha antiga está incorreta.");
         }
 
         usuario.setSenha(passwordEncoder.encode(novaSenha));
@@ -62,7 +63,8 @@ public class UsuarioService {
 
     private Usuario buscarUsuarioPorId(Long id) {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o id: " + id));
+                .orElseThrow(() -> new VerificarExisteException(
+                        "Usuário não encontrado com o id: " + id));
     }
 
     private UsuarioResponseDTO mapToResponseDTO(Usuario usuario) {
