@@ -73,7 +73,7 @@ public class LivroService {
 
         livroRepository.save(livro);
         enviarEmail(livro.getTitulo(), "Cadastrado");
-        
+
         return mapToResponseDTO(livro);
     }
 
@@ -156,8 +156,15 @@ public class LivroService {
     private void enviarEmail(String tituloLivro, String acao) {
         Usuario usuario = getUsuarioLogado();
         try {
-            String texto = "Olá, " + usuario.getNome() + ". O livro '" + tituloLivro + "' foi " + acao + " com sucesso.";
-            mailConfig.sendEmail(usuario.getEmail(), "Notificação de Livro: " + acao, texto);
+            String assunto = "Aviso de Atualização: " + tituloLivro;
+
+            mailConfig.sendEmail(
+                    usuario.getEmail(),
+                    assunto,
+                    usuario.getNome(),
+                    tituloLivro,
+                    acao);
+
         } catch (Exception e) {
             throw new EmailException("Livro " + acao + ", mas o e-mail falhou: " + e.getMessage());
         }
