@@ -3,7 +3,6 @@ package br.com.escola.biblioteca.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.com.escola.biblioteca.entity.Livro;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Objeto de resposta com os dados detalhados do autor")
@@ -22,5 +21,5 @@ public record AutorResponseDTO(
         LocalDate dataNascimento,
         
     	@Schema(description="Lista de livros do autor")
-        List<Livro> livros) {
+		List<LivroSimplesDTO> livros) {
 }

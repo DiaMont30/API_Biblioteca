@@ -56,7 +56,11 @@ public class LivroService {
         }
 
         public LivroResponseDTO salvar(LivroRequestDTO dto) {
-            
+
+                if (livroRepository.existsByIsbn(dto.isbn())) {
+                        throw new VerificarExisteException("Já existe um livro cadastrado com o ISBN: " + dto.isbn());
+                }
+
                 Autor autor = buscarAutorPorId(dto.autorId());
 
                 Genero genero = buscarGeneroPorId(dto.generoId());
@@ -66,7 +70,6 @@ public class LivroService {
                 Livro livro = new Livro();
                 importeDadosParaEntidade(livro, dto);
 
-                
                 livro.setAutor(autor);
                 livro.setGenero(genero);
                 livro.setEditora(editora);
@@ -112,22 +115,26 @@ public class LivroService {
 
         private Livro buscarLivroPorId(Long id) {
                 return livroRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Livro não encontrado com o id: " + id));
+                                .orElseThrow(() -> new VerificarExisteException(
+                                                "Livro não encontrado com o id: " + id));
         }
 
         private Autor buscarAutorPorId(Long id) {
                 return autorRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Autor não encontrado com o id: " + id));
+                                .orElseThrow(() -> new VerificarExisteException(
+                                                "Autor não encontrado com o id: " + id));
         }
 
         private Genero buscarGeneroPorId(Long id) {
                 return generoRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Gênero não encontrado com o id: " + id));
+                                .orElseThrow(() -> new VerificarExisteException(
+                                                "Gênero não encontrado com o id: " + id));
         }
 
         private Editora buscarEditoraPorId(Long id) {
                 return editoraRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Editora não encontrada com o id: " + id));
+                                .orElseThrow(() -> new VerificarExisteException(
+                                                "Editora não encontrada com o id: " + id));
         }
 
         private LivroResponseDTO mapToResponseDTO(Livro livro) {

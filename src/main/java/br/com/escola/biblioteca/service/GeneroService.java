@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.escola.biblioteca.dto.GeneroRequestDTO;
 import br.com.escola.biblioteca.dto.GeneroResponseDTO;
+import br.com.escola.biblioteca.dto.LivroSimplesDTO;
 import br.com.escola.biblioteca.entity.Genero;
 import br.com.escola.biblioteca.exception.VerificarExisteException;
 import br.com.escola.biblioteca.repository.GeneroRepository;
@@ -59,10 +60,23 @@ public class GeneroService {
     }
 
     private GeneroResponseDTO mapToResponse(Genero genero) {
+        List<LivroSimplesDTO> livrosDTO = null;
+        
+        if (genero.getLivros() != null) {
+            livrosDTO = genero.getLivros().stream()
+                .map(livro -> new LivroSimplesDTO(
+                    livro.getId(),
+                    livro.getTitulo(),
+                    livro.getIsbn(),
+                    livro.getAnoPublicacao()
+                ))
+                .collect(Collectors.toList());
+        }
         return new GeneroResponseDTO(
             genero.getId(),
             genero.getNome(),
-            genero.getSigla().getSiglaAbreviada()// 
+            genero.getSigla().name(),
+            livrosDTO 
         );
     }
 }
