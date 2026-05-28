@@ -37,32 +37,67 @@ API_Biblioteca/src/main/java/br/com/escola/biblioteca
 │
 ├── config
 |   └── SwaggerConfig.java
+|   └── SecurityFilter.java
+|   └── SecurityConfig.java
 |
 ├── controller
+│   ├── AutenticacaoController.java
 │   ├── AutorController.java
-│   └── LivroController.java
+│   ├── EditoraController.java
+│   ├── GeneroController.java
+│   ├── LivroController.java
+│   └── UsuarioController.java
 │
 ├── service
+│   ├── AutorizacaoService.java
 │   ├── AutorService.java
+│   ├── EditoraService.java
+│   ├── EmailService.java
+│   ├── GeneroService.java
+│   ├── TokenService.java
+│   ├── UsuarioService.java
 │   └── LivroService.java
 │
 ├── repository
 │   ├── AutorRepository.java
+│   ├── EditoraRepository.java
+│   ├── GeneroRepository.java
+│   ├── UsuarioRepository.java
 │   └── LivroRepository.java
 │
 ├── dto
+│   ├── AlterarSenhaDTO.java
+│   ├── AutenticacaoDTO.java
 │   ├── AutorRequestDTO.java
 │   ├── AutorResponseDTO.java
+│   ├── EditoraResponseDTO.java
+│   ├── EditoraRequestDTO.java
+│   ├── GeneroRequestDTO.java
+│   ├── GeneroResponseDTO.java
 │   ├── LivroRequestDTO.java
-│   └── LivroResponseDTO.java
+│   ├── LivroResponseDTO.java
+│   ├── LivroSimplesDTO.java
+│   ├── TokenResponseDTO.java
+│   ├── UsuarioAtualizarDTO.java
+│   ├── UsuarioRequestDTO.java
+│   └── UsuarioResponseDTO.java
 │
 ├── entity
 │   ├── Autor.java
-│   └── Livro.java
+│   ├── Editora.java
+│   ├── Genero.java
+│   ├── Livro.java
+│   └── Usuario.java
+│
+├── enums
+│   ├── EstadoBrasileiro.java
+│   ├── SiglaGenero.java
+│   └── UsuarioRole.java
 │
 └── exception
   ├── ControllerExceptionHandler.java
   ├── ErroResposta.java
+  ├── EmailException.java
   └── VerificarExisteException.java
 ```
 
@@ -85,6 +120,7 @@ http://localhost:8080/swagger-ui/index.html
 - [PostgreSQL](https://www.postgresql.org/) — SGBD utilizado no projeto
 - [DBeaver](https://dbeaver.io/) — Interface gráfica para gerenciamento do banco
 - [Swagger](https://swagger.io/) — Ferramenta de criação da Documentação da API
+- [JWT](https://www.jwt.io/) — Ferramenta de implementação do JWT (JSON Web Token), token digital utilizado para autenticação e autorização em APIs e aplicações web.
 
 ---
 
