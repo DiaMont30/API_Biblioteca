@@ -33,7 +33,7 @@ public class Usuario implements UserDetails {
   @Column(nullable = false, unique = true, length = 100)
   private String email;
 
-  @Column(nullable = false, length = 60)
+  @Column(nullable = false, length = 6)
   private String senha;
 
   @Enumerated(EnumType.STRING)
