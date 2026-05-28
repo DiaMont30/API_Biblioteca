@@ -134,7 +134,7 @@ public class LivroService {
                 livro.getIsbn(),
                 livro.getAnoPublicacao(),
                 livro.getGenero().getId(),
-                livro.getGenero().getNome(),
+                livro.getGenero().getSigla(),
                 livro.getAutor().getId(),
                 livro.getAutor().getNome(),
                 livro.getEditora().getId(),

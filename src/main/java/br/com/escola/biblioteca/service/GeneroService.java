@@ -68,7 +68,8 @@ public class GeneroService {
                     livro.getId(),
                     livro.getTitulo(),
                     livro.getIsbn(),
-                    livro.getAnoPublicacao()
+                    livro.getAnoPublicacao(),
+                    livro.getGenero().getSigla()
                 ))
                 .collect(Collectors.toList());
         }

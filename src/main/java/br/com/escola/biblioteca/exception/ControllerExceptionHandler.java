@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -63,4 +64,33 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return handleExceptionInternal(ex, erroResposta, new HttpHeaders(), status, request);
 	}
+	
+	@Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        List<String> erros = new ArrayList<>();
+        String mensagemErro = "Formato de requisição inválido.";
+
+        if (ex.getMessage() != null && ex.getMessage().contains("SiglaGenero")) {
+            mensagemErro = "Valor inválido para a Sigla do Gênero.";
+            erros.add("As siglas permitidas são: ROM, DRM, FIC, TER, BIO");
+            
+        }else if (ex.getMessage() != null && ex.getMessage().contains("EstadoBrasileiro")) {
+            mensagemErro = "Estado inválido.";
+            erros.add("O valor informado não é uma sigla de estado válida.");
+            erros.add("Use siglas como: RJ, SP, MG, ES, etc. (Apenas as 27 unidades federativas).");
+        }
+        else {
+            erros.add(ex.getLocalizedMessage());
+        }
+
+        ErroResposta erroResposta = new ErroResposta(
+                status.value(),
+                mensagemErro,
+                LocalDateTime.now(),
+                erros);
+
+        return handleExceptionInternal(ex, erroResposta, headers, status, request);
+    }
 }

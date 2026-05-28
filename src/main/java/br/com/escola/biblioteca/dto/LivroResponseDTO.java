@@ -1,5 +1,6 @@
 package br.com.escola.biblioteca.dto;
 
+import br.com.escola.biblioteca.enums.SiglaGenero;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Objeto de resposta com os dados detalhados do livro")
@@ -20,8 +21,8 @@ public record LivroResponseDTO(
     	@Schema(description = "ID dogênero vinculado a este livro", example = "1")
         Long generoID, 
         
-    	@Schema(description = "nome do gênero do livro", example = "Ficção Científica")
-        String generoNome,
+    	@Schema(description = "A sigla do gênero do livro", example = "FIC")
+        SiglaGenero generoSigla,
         
         @Schema(description = "ID do autor vinculado a este livro", example = "1")
         Long autorId,
