@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.escola.biblioteca.annotation.ApiRespostasPadrao;
 import br.com.escola.biblioteca.dto.AutenticacaoDTO;
 import br.com.escola.biblioteca.dto.TokenResponseDTO;
 import br.com.escola.biblioteca.dto.UsuarioRequestDTO;
