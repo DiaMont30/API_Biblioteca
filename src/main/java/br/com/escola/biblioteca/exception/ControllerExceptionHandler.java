@@ -64,33 +64,51 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return handleExceptionInternal(ex, erroResposta, new HttpHeaders(), status, request);
 	}
-	
+
 	@Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-        List<String> erros = new ArrayList<>();
-        String mensagemErro = "Formato de requisição inválido.";
+		List<String> erros = new ArrayList<>();
+		String mensagemErro = "Formato de requisição inválido.";
 
-        if (ex.getMessage() != null && ex.getMessage().contains("SiglaGenero")) {
-            mensagemErro = "Valor inválido para a Sigla do Gênero.";
-            erros.add("As siglas permitidas são: ROM, DRM, FIC, TER, BIO");
-            
-        }else if (ex.getMessage() != null && ex.getMessage().contains("EstadoBrasileiro")) {
-            mensagemErro = "Estado inválido.";
-            erros.add("O valor informado não é uma sigla de estado válida.");
-            erros.add("Use siglas como: RJ, SP, MG, ES, etc. (Apenas as 27 unidades federativas).");
-        }
-        else {
-            erros.add(ex.getLocalizedMessage());
-        }
+		if (ex.getMessage() != null && ex.getMessage().contains("SiglaGenero")) {
+			mensagemErro = "Valor inválido para a Sigla do Gênero.";
+			erros.add("As siglas permitidas são: ROM, DRM, FIC, TER, BIO");
 
-        ErroResposta erroResposta = new ErroResposta(
-                status.value(),
-                mensagemErro,
-                LocalDateTime.now(),
-                erros);
+		} else if (ex.getMessage() != null && ex.getMessage().contains("EstadoBrasileiro")) {
+			mensagemErro = "Estado inválido.";
+			erros.add("O valor informado não é uma sigla de estado válida.");
+			erros.add("Use siglas como: RJ, SP, MG, ES, etc. (Apenas as 27 unidades federativas).");
 
-        return handleExceptionInternal(ex, erroResposta, headers, status, request);
-    }
+		} else if (ex.getMessage() != null && ex.getMessage().contains("UsuarioRole")) {
+			mensagemErro = "Tipo de perfil (Role) inválido.";
+			erros.add("Os valores permitidos para a role são estritamente: ADMIN ou USER.");
+			erros.add("Certifique-se de não enviar o campo vazio ou com letras minúsculas.");
+
+		} else {
+			erros.add(ex.getLocalizedMessage());
+		}
+
+		ErroResposta erroResposta = new ErroResposta(
+				status.value(),
+				mensagemErro,
+				LocalDateTime.now(),
+				erros);
+
+		return handleExceptionInternal(ex, erroResposta, headers, status, request);
+	}
+
+	@ExceptionHandler(EmailException.class)
+	public ResponseEntity<Object> handleEmail(EmailException ex, WebRequest request) {
+		HttpStatus status = HttpStatus.CONFLICT;
+
+		ErroResposta erroResposta = new ErroResposta(
+				status.value(),
+				"Conflito de Dados",
+				LocalDateTime.now(),
+				List.of(ex.getMessage()));
+
+		return handleExceptionInternal(ex, erroResposta, new HttpHeaders(), status, request);
+	}
 }

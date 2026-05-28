@@ -10,11 +10,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.escola.biblioteca.annotation.ApiRespostasPadrao;
 import br.com.escola.biblioteca.dto.AutenticacaoDTO;
 import br.com.escola.biblioteca.dto.TokenResponseDTO;
 import br.com.escola.biblioteca.dto.UsuarioRequestDTO;
 import br.com.escola.biblioteca.dto.UsuarioResponseDTO;
 import br.com.escola.biblioteca.entity.Usuario;
+import br.com.escola.biblioteca.exception.EmailException;
 import br.com.escola.biblioteca.repository.UsuarioRepository;
 import br.com.escola.biblioteca.service.TokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,7 +54,7 @@ public class AutenticacaoController {
 
   public ResponseEntity<UsuarioResponseDTO> registrar(@RequestBody @Valid UsuarioRequestDTO dto) {
     if (this.repository.findByEmail(dto.email()) != null) {
-      return ResponseEntity.badRequest().build();
+      throw new EmailException("Este e-mail já está cadastrado em nosso sistema.");
     }
 
     String senhaCriptografada = passwordEncoder.encode(dto.senha());
