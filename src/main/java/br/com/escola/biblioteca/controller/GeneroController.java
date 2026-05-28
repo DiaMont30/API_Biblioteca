@@ -49,7 +49,7 @@ public class GeneroController {
         return ResponseEntity.ok(generoService.atualizar(id, dto));
     }
 
-    @DeleteMapping("/deletar-livro/{id}")
+    @DeleteMapping("/deletar-genero/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         generoService.deletar(id);
         return ResponseEntity.noContent().build();
