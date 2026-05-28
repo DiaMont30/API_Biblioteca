@@ -6,17 +6,21 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.escola.biblioteca.config.MailConfig;
 import br.com.escola.biblioteca.dto.LivroRequestDTO;
 import br.com.escola.biblioteca.dto.LivroResponseDTO;
 import br.com.escola.biblioteca.entity.Autor;
 import br.com.escola.biblioteca.entity.Editora;
 import br.com.escola.biblioteca.entity.Genero;
 import br.com.escola.biblioteca.entity.Livro;
+import br.com.escola.biblioteca.entity.Usuario;
+import br.com.escola.biblioteca.exception.EmailException;
 import br.com.escola.biblioteca.exception.VerificarExisteException;
 import br.com.escola.biblioteca.repository.AutorRepository;
 import br.com.escola.biblioteca.repository.EditoraRepository;
 import br.com.escola.biblioteca.repository.GeneroRepository;
 import br.com.escola.biblioteca.repository.LivroRepository;
+import br.com.escola.biblioteca.repository.UsuarioRepository;
 
 @Service
 public class LivroService {
@@ -32,6 +36,12 @@ public class LivroService {
 
         @Autowired
         private EditoraRepository editoraRepository;
+        
+        @Autowired
+        private UsuarioRepository usuarioRepository;
+        
+        @Autowired
+        private MailConfig mailConfig;
 
         public List<LivroResponseDTO> listarLivros() {
                 List<Livro> livros = livroRepository.findAll();
@@ -64,6 +74,7 @@ public class LivroService {
                 livro.setGenero(genero);
                 livro.setEditora(editora);
 
+                enviarEmail(livro.getTitulo(), "Cadastrado");
                 return mapToResponseDTO(livroRepository.save(livro));
         }
 
@@ -81,14 +92,17 @@ public class LivroService {
                 livro.setGenero(genero);
                 livro.setEditora(editora);
 
+                enviarEmail(livro.getTitulo(), "Atualizado");
                 return mapToResponseDTO(livroRepository.save(livro));
 
         }
 
         public void deletar(Long id) {
-                buscarLivroPorId(id);
-
-                livroRepository.deleteById(id);
+        	Livro livro = buscarLivroPorId(id);
+        	String titulo = livro.getTitulo();
+        	livroRepository.deleteById(id);
+        	enviarEmail(titulo, "Excluído");
+                
         }
 
         private void importeDadosParaEntidade(Livro livro, LivroRequestDTO dto) {
@@ -130,4 +144,29 @@ public class LivroService {
                                 livro.getEditora().getId(),
                                 livro.getEditora().getNome());
         }
+        
+        private Usuario getUsuarioLogado() {
+            String emailLogado = org.springframework.security.core.context.SecurityContextHolder
+                    .getContext().getAuthentication().getName();
+            
+            Object usuarioBanco = usuarioRepository.findByEmail(emailLogado);
+            
+            if (usuarioBanco == null) {
+                throw new VerificarExisteException("Usuário logado não encontrado no banco.");
+            }
+            return (Usuario) usuarioBanco;
+        }
+        
+        private void enviarEmail(String tituloLivro, String acao) {
+            Usuario usuario = getUsuarioLogado(); 
+            
+            try {
+                String texto = "Ola, " + usuario.getNome() + ". O livro '" + tituloLivro + "' foi " + acao + " com sucesso.";
+                mailConfig.sendEmail(usuario.getEmail(), "Notificação de Livro: " + acao, texto);
+            } catch (Exception e) {
+                throw new EmailException(
+                    "Livro " + acao + ", mas o e-mail falhou: " + e.getMessage());
+            }
+        }
+        
 }
